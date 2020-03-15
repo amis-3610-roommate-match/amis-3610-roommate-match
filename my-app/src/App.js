@@ -10,6 +10,7 @@ export default class App extends Component {
   render(){
   return (
     <div id="App">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet"/>
       <body>
         <SideBar />
         <div id="page-wrap">

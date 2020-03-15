@@ -67,9 +67,8 @@ a{
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
-#imgcard{
-  margin-top: 8%;
-}
-.card_container{
-  fill: #7E52A0;
+.Name_User{
+  font-weight: bold;
+  font-size: 20pt;
+  font-family: 'Roboto', sans-serif;
 }

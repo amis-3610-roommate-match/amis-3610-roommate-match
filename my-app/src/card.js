@@ -7,16 +7,16 @@ export default class CardSwipe extends Component{
     this.onSwipeRight = this.onSwipeRight.bind(this);
     this.state ={
       data : [
-        {id: 1, name: "First", img:"https://via.placeholder.com/350", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.", swipedRight:null, match: true},
-        {id: 2, name: "Second", img:"https://via.placeholder.com/350",detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}, 
-        {id: 3, name: "third", img:"https://via.placeholder.com/350", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}, 
-        {id: 4, name: "fourth", img:"https://via.placeholder.com/350", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}]
+        {id: 1, name: "First", img:"https://via.placeholder.com/400", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.", swipedRight:null, match: true},
+        {id: 2, name: "Second", img:"https://via.placeholder.com/400",detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}, 
+        {id: 3, name: "third", img:"https://via.placeholder.com/400", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}, 
+        {id: 4, name: "fourth", img:"https://via.placeholder.com/400", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}]
     };
   }
   onSwipeRight(id) {
     console.log(id.id);
     id.swipedRight = true;
-    if(id.swipedRight == true && id.match == true){
+    if(id.swipedRight === true && id.match === true){
       alert("its a match");
     }
     console.log(this.state.data);
@@ -25,7 +25,6 @@ export default class CardSwipe extends Component{
   onSwipeLeft(id) {
     console.log(id.id);
     id.swipedRight = false;
-    alert("I was swiped left.");
   }
   renderCards() {
     return this.state.data.map((d) => {
@@ -35,13 +34,11 @@ export default class CardSwipe extends Component{
           onSwipeRight={this.onSwipeRight.bind(d.id)}
           onSwipeLeft={this.onSwipeLeft.bind(d.id)}
           data={d}>
-          <div>
-            <img id="imgcard" src={d.img}></img>
-            </div>
+            <img class="imgcard" src={d.img}/>
             <br></br>
-            {d.name}
-            <br></br>
-            {d.detail}
+            <h1 class="Name_User" align="left">{d.name}</h1>
+            <p class= "detail" align="left">{d.detail}</p>
+            
             
         </Card>
       );
