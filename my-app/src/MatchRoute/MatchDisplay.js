@@ -6,8 +6,8 @@ export function MatchDisplay(props){
     return(
         <div className= "display">
             <CardColumns style={{margin:"2.5%"}}>
-                {props.books.map(b => (
-                    <MatchCard book = {b} key={b.id}/>
+                {props.users.map(u => (
+                    <MatchCard user = {u} key={u.id}/>
                 ))}
             </CardColumns>
         </div>

@@ -5,44 +5,11 @@ export default class Matches extends Component{
     constructor(props){
         super(props);
         this.state = {
-            books:[
-                {
-                    id: 1,
-                    title: "Domain Drive Design",
-                    author: "Eric Evans",
-                    isbn: "978-0321125217"
-                },
-                {
-                    id:2,
-                    title: "Accelerate",
-                    author: "Nicole Forsgren",
-                    isbn: "978-1942788331"
-                },
-                {
-                    id:3,
-                    title: "Accelerate",
-                    author: "Nicole Forsgren",
-                    isbn: "978-1942788331"
-                },
-                {
-                    id:4,
-                    title: "Life",
-                    author: "Nicole Forsgren",
-                    isbn: "978-1942788331"
-                },
-                {
-                    id:5,
-                    title: "Jazz",
-                    author: "Nicole Forsgren",
-                    isbn: "978-1942788331"
-                },
-                {
-                    id:6,
-                    title: "Bass",
-                    author: "Nicole Forsgren",
-                    isbn: "978-1942788331"
-                }
-
+            users:[
+                {id: 1, name: "Terri Moy", Age: "22", img:"../img/all.jpg", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.", swipedRight:null, match: true},
+                {id: 2, name: "Love Quinn", Age: "22", img:"https://via.placeholder.com/400",detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}, 
+                {id: 3, name: "Gwen Beck", Age: "22", img:"https://via.placeholder.com/400", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}, 
+                {id: 4, name: "James Lang", Age: "22",img:"https://via.placeholder.com/400", detail: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",  swipedRight:null, match: null}
             ]
         };
     }
@@ -50,7 +17,7 @@ export default class Matches extends Component{
         return(
             <div className="Books">
                 <div className="lander">
-                    <MatchDisplay books={this.state.books}/>
+                    <MatchDisplay users={this.state.users}/>
                 </div>
             </div>
         );

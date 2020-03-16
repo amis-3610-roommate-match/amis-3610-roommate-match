@@ -8,8 +8,8 @@ body {
   font-family: 'Times New Roman', Times, serif;
   height: 100vh;
 }
-a{
-  font-family: 'Oswald', sans-serif;
+h1{
+  font-family: 'Roboto', sans-serif;
 }
 
 #page-wrap {
@@ -71,4 +71,27 @@ a{
   font-weight: bold;
   font-size: 20pt;
   font-family: 'Roboto', sans-serif;
+  margin-bottom: 15%;
+}
+.detail{
+  margin-top: -15%;
+}
+.box{
+  width: 150px;
+  height: 100px;            
+  position: absolute;
+  
+  
+}
+.Yes{
+  top: 45%;
+  left: 65%;  /* for demo purpose  */
+}
+.No{
+  top: 45%;
+  left: 22%;/* for demo purpose  */
+}
+.stack-top{
+  z-index: 9;
+  margin: 20px; /* for demo purpose  */
 }
