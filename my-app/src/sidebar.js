@@ -12,12 +12,8 @@ export default props => {
         Matches
       </a>
 
-      <a className="menu-item" href="/angular">
-        Profile
-      </a>
-
-      <a className="menu-item" href="/react">
-        Settings
+      <a className="menu-item" href="/profile">
+        Profile Settings
       </a>
     </Menu>
   );

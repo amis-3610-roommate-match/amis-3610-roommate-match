@@ -5,7 +5,7 @@ export default function Matches(props){
     const [data, setData] = useState([]);
     
     useEffect(() =>{
-        fetch("https://localhost:5001/api/matches/")
+        fetch("https://localhost:5001/api/matched/")
         .then(response => response.json())
         .then(data => setData(data));
     }, [])

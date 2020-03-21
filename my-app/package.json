@@ -15,11 +15,13 @@
     "react-hammerjs": "^1.0.1",
     "react-native": "^0.61.5",
     "react-native-swipeable-cards": "^1.1.23",
+    "react-notifications": "^1.5.0",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-swipe-card": "^0.1.4",
-    "react-swipeable-cards": "^1.0.6"
+    "react-swipeable-cards": "^1.0.6",
+    "react-toastify": "^5.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

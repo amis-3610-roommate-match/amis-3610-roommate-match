@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { Card, CardWrapper } from 'react-swipeable-cards';
 import $ from "jquery";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function importAll(r) {
   let images = {};
@@ -19,15 +21,38 @@ export default function CardSwipe(props){
       .then(response => response.json())
       .then(data => setData(data));
   }, [])
+
+  const uploadUser=(id)=>{
+    console.log("its going");
+  //Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            name: id.name,
+            age: id.age,
+            img: id.img,
+            detail: id.detail,
+            swipedRight: id.swipedRight,
+            match: id.match})
+    };
+    fetch('https://localhost:5001/api/matched', requestOptions)
+        .then(response => {if (response.ok) {
+          toast.success("New Match!");
+          return response.json();
+        } else {
+          toast.error("Something went wrong...");
+          throw new Error('Something went wrong ...');
+        }})
+  }
+
+
   const onSwipeRight = (id) => {
-    console.log(id.id);
+    console.log(id);
     id.swipedRight = true;
     if(id.swipedRight === true && id.match === true){
-      alert("New Match");
+      uploadUser(id);
     }
-
-    console.log(data);
-
   }
   const onSwipeLeft =id => {
     console.log(id.id);
@@ -43,7 +68,7 @@ export default function CardSwipe(props){
           data={d}>
             <img class="imgcard" src={images[d.img]} draggable="false"/>
             <br></br>
-            <h1 class="Name_User" align="left">{d.name} &nbsp; {d.Age}</h1>
+            <h1 class="Name_User" align="left">{d.name} &nbsp; {d.age}</h1>
             <p class= "detail" align="left">{d.detail}</p>
             
             
@@ -52,8 +77,11 @@ export default function CardSwipe(props){
     });
   }
   return(
+    <div>
     <CardWrapper>
       {renderCards()}
     </CardWrapper>
+    <ToastContainer/>
+    </div>
   );
 }
