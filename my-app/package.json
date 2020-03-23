@@ -21,7 +21,8 @@
     "react-scripts": "3.4.0",
     "react-swipe-card": "^0.1.4",
     "react-swipeable-cards": "^1.0.6",
-    "react-toastify": "^5.5.0"
+    "react-toastify": "^5.5.0",
+    "use-position": "0.0.6"
   },
   "scripts": {
     "start": "react-scripts start",

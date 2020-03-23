@@ -3,6 +3,7 @@ import { Card, CardWrapper } from 'react-swipeable-cards';
 import $ from "jquery";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { usePosition } from 'use-position';
 
 function importAll(r) {
   let images = {};
@@ -10,17 +11,73 @@ function importAll(r) {
   return images;
 }
 
+const linkStyle = {
+ border: "1px solid",
+ color: "#fff",
+ background: "black",
+ padding: "5px"
+}; 
+
 const images = importAll(require.context('../img', false, /\.(png|jpe?g|svg)$/));
 
-export default function CardSwipe(props){
+class NewMessageNotification extends React.Component {
   
+  displayMessage = () => {
+    //remove all notifications
+    toast.dismiss();
+
+    //navigate to the link. I'll use location hash but it can be done with any router solution
+    window.location.replace( this.props.link);
+  }
+
+  render(){
+    return (
+      <div>
+        New Match! <a style={linkStyle} onClick={this.displayMessage}>View Matches</a>
+      </div>
+    );
+  }
+}
+
+export default function CardSwipe(props){
+  const { latitude, longitude, timestamp, accuracy, error }= usePosition(true);
   const [data, setData] = useState([]);
+  console.log(latitude+" "+longitude);
     
   useEffect(() =>{
       fetch("https://localhost:5001/api/matches/")
       .then(response => response.json())
       .then(data => setData(data));
   }, [])
+
+  const findDistance=(data, latitude, longitude)=>{
+    var distances = []
+    debugger;
+    for(var i = 0; i < data.length; i++){
+      var matchLat = Number((data[i].location).substring(0,(data[i].location).indexOf(" "))); 
+      var matchLong = Number((data[i].location).substring((data[i].location).indexOf(" "), (data[i].location).length)); 
+      var calcDist = Math.sqrt((Math.abs(matchLat-latitude))^2+(Math.abs(matchLong-longitude))^2);
+      //calcDist = Math.random(calcDist);
+      distances.push(calcDist);
+    }
+    for(var i = 0; i < data.length; i++){
+      if(distances[i] > 10){
+        data.splice(i, 1);
+
+      }
+    }
+    return distances;
+  }
+
+  console.log();
+
+  const sendToMatch=()=>{
+    window.location.href = "http://localhost:3000/matches";
+  }
+
+  // const options ={
+  //   onClick: //this.sendToMatch.bind()
+  // }
 
   const uploadUser=(id)=>{
     console.log("its going");
@@ -34,11 +91,13 @@ export default function CardSwipe(props){
             img: id.img,
             detail: id.detail,
             swipedRight: id.swipedRight,
-            match: id.match})
+            match: id.match,
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10})
     };
     fetch('https://localhost:5001/api/matched', requestOptions)
         .then(response => {if (response.ok) {
-          toast.success("New Match!");
+          toast.success(<NewMessageNotification link="matches"/>);
           return response.json();
         } else {
           toast.error("Something went wrong...");
@@ -59,6 +118,7 @@ export default function CardSwipe(props){
     id.swipedRight = false;
   }
   const renderCards =() => {
+    findDistance(data, latitude, longitude)
     return data.map((d) => {
       return(
         <Card

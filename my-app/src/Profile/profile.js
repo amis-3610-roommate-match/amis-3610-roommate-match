@@ -55,7 +55,9 @@ export default class Profile extends Component{
                 img: "all.jpg",
                 detail: document.getElementById("exampleFormControlTextarea1").value,
                 swipedRight: false,
-                match: true})
+                match: true,
+                location: "40.152015899999995 -83.2268893",
+                howFar: Number(document.getElementById("distanceSelect").value)})
         };
         fetch('https://localhost:5001/api/matches', requestOptions)
             .then(response =>  {if (response.ok) {
@@ -105,7 +107,7 @@ export default class Profile extends Component{
                     <br></br>
                     <div className="form-group">
                         <label className="Labelname"  >Select Distance:</label>
-                        <select className="form-control barInput" id="sel1">
+                        <select className="form-control barInput" id="distanceSelect">
                             <option>1</option>
                             <option>10</option>
                             <option>20</option>
