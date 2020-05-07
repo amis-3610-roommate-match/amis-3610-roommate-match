@@ -8,8 +8,8 @@ export default class Swipe extends Component{
         return(
             <div>
                 <CardSwipe/>
-                <img src= {Yes} class="box Yes stack-top" style={{opacity: 0}}/>
-                <img src= {No}class="box No stack-top"style={{opacity: 0}}/>
+                <img src= {Yes} className="box Yes stack-top" style={{opacity: 0}}/>
+                <img src= {No}className="box No stack-top"style={{opacity: 0}}/>
             </div>
         );
     }

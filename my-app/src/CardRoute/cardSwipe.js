@@ -42,17 +42,47 @@ class NewMessageNotification extends React.Component {
 export default function CardSwipe(props){
   const { latitude, longitude, timestamp, accuracy, error }= usePosition(true);
   const [data, setData] = useState([]);
-  console.log(latitude+" "+longitude);
+  const [data2, setData2] = useState([]);
     
-  useEffect(() =>{
-      fetch("https://localhost:5001/api/matches/")
+  debugger;
+  useEffect(()=>{
+    const ReqOP = {method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: "kuma_109",
+      password: "honshu123"})
+    };
+    async function getData(options){
+      await fetch('https://localhost:5001/users/authenticate', options)
       .then(response => response.json())
-      .then(data => setData(data));
-  }, [])
+      .then(data2 => setData2(data2));
+      return data2;
+      
+    }
+   getData(ReqOP);
+  }, []);
 
+  const getData2=(data3)=>{
+     fetch("https://localhost:5001/api/matches/", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer "+data3.token
+      }
+    })
+      .then(response =>  {if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }})
+      .then(data => setData(data));
+      
+  }
+
+  
+  
   const findDistance=(data, latitude, longitude)=>{
     var distances = []
-    debugger;
     for(var i = 0; i < data.length; i++){
       var matchLat = Number((data[i].location).substring(0,(data[i].location).indexOf(" "))); 
       var matchLong = Number((data[i].location).substring((data[i].location).indexOf(" "), (data[i].location).length)); 
@@ -61,16 +91,13 @@ export default function CardSwipe(props){
       distances.push(calcDist);
     }
     for(var i = 0; i < data.length; i++){
-      if(distances[i] > 10){
+      if(distances[i] > 5){
         data.splice(i, 1);
 
       }
     }
     return distances;
   }
-
-  console.log();
-
   const sendToMatch=()=>{
     window.location.href = "http://localhost:3000/matches";
   }
@@ -98,13 +125,13 @@ export default function CardSwipe(props){
     fetch('https://localhost:5001/api/matched', requestOptions)
         .then(response => {if (response.ok) {
           toast.success(<NewMessageNotification link="matches"/>);
+          console.log(response);
           return response.json();
         } else {
           toast.error("Something went wrong...");
           throw new Error('Something went wrong ...');
         }})
   }
-
 
   const onSwipeRight = (id) => {
     console.log(id);
@@ -118,7 +145,11 @@ export default function CardSwipe(props){
     id.swipedRight = false;
   }
   const renderCards =() => {
-    findDistance(data, latitude, longitude)
+    findDistance(data, latitude, longitude);
+    if(data2.token != null){
+
+      getData2(data2);
+    }
     return data.map((d) => {
       return(
         <Card
