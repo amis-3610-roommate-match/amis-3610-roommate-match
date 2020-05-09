@@ -3,7 +3,7 @@ import {Card, Button} from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-debugger;
+;
 export default class Login extends Component{
     constructor(props){
         super(props);
@@ -23,7 +23,7 @@ export default class Login extends Component{
         this.setState({password: evt.target.value});
     }
     handleUser = async ()=>{
-        debugger;
+        ;
             const ReqOP = {method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
