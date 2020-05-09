@@ -28,13 +28,6 @@ export default class Profile extends Component{
         })
         console.log("hello");
       }
-      handleSubmit = (evt) => {
-        if (!this.canBeSubmitted()) {
-          evt.preventDefault();
-          return;
-        }
-        // actual submit logic...
-      };
       handleBio= evt=>{
         this.setState({bio: evt.target.value});
       }

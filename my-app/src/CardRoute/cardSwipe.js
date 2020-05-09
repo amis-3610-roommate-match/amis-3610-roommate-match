@@ -42,32 +42,12 @@ class NewMessageNotification extends React.Component {
 export default function CardSwipe(props){
   const { latitude, longitude, timestamp, accuracy, error }= usePosition(true);
   const [data, setData] = useState([]);
-  const [data2, setData2] = useState([]);
-    
-  debugger;
   useEffect(()=>{
-    const ReqOP = {method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      username: "kuma_109",
-      password: "honshu123"})
-    };
-    async function getData(options){
-      await fetch('https://localhost:5001/users/authenticate', options)
-      .then(response => response.json())
-      .then(data2 => setData2(data2));
-      return data2;
-      
-    }
-   getData(ReqOP);
-  }, []);
-
-  const getData2=(data3)=>{
      fetch("https://localhost:5001/api/matches/", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': "Bearer "+data3.token
+          'Authorization': "Bearer "+localStorage.getItem("token")
       }
     })
       .then(response =>  {if (response.ok) {
@@ -77,7 +57,7 @@ export default function CardSwipe(props){
       }})
       .then(data => setData(data));
       
-  }
+  }, []);
 
   
   
@@ -146,10 +126,9 @@ export default function CardSwipe(props){
   }
   const renderCards =() => {
     findDistance(data, latitude, longitude);
-    if(data2.token != null){
-
-      getData2(data2);
-    }
+    // if(data2.token != null){
+    //   getData2(data2);
+    // }
     return data.map((d) => {
       return(
         <Card

@@ -15,6 +15,10 @@ export default props => {
       <a className="menu-item" href="/profile">
         Profile Settings
       </a>
+
+      <a className="menu-item" href="/login">
+        Login
+      </a>
     </Menu>
   );
 };
