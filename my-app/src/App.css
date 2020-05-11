@@ -120,6 +120,7 @@ h1{
   width: 500px;
   height: 460px;
   margin-left:33%;
+  margin-top: 5%;
   border-radius: 10px;
   border: 2px solid #888888;
   background: white;
@@ -142,6 +143,12 @@ h1{
   width: 480px;
   margin-left:10px;
 }
+#userLabel{
+  margin-top: 8%;
+}
+#login_button{
+  margin-top: 10%;
+}
 #passWord {
   width: 480px;
   margin-left:10px;
@@ -154,4 +161,7 @@ h1{
 }
 #Sex{
   width:80px;
+}
+#logo_box{
+  margin-top: 7%;
 }

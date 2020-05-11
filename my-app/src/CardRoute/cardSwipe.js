@@ -18,7 +18,7 @@ const linkStyle = {
  padding: "5px"
 }; 
 
-const images = importAll(require.context('../img', false, /\.(png|jpe?g|svg)$/));
+const images = importAll(require.context('../img', false, /\.(png|jpe?g|svg|gif)$/));
 
 class NewMessageNotification extends React.Component {
   
@@ -40,29 +40,12 @@ class NewMessageNotification extends React.Component {
 }
 
 export default function CardSwipe(props){
+  debugger;
   const { latitude, longitude, timestamp, accuracy, error }= usePosition(true);
   const [data, setData] = useState([]);
-  useEffect(()=>{
-     fetch("https://localhost:5001/api/matches/", {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer "+localStorage.getItem("token")
-      }
-    })
-      .then(response =>  {if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Something went wrong ...');
-      }})
-      .then(data => setData(data));
-      
-  }, []);
 
-  
-  
   const findDistance=(data, latitude, longitude)=>{
-    var distances = []
+    var distances = [];
     for(var i = 0; i < data.length; i++){
       var matchLat = Number((data[i].location).substring(0,(data[i].location).indexOf(" "))); 
       var matchLong = Number((data[i].location).substring((data[i].location).indexOf(" "), (data[i].location).length)); 
@@ -76,8 +59,34 @@ export default function CardSwipe(props){
 
       }
     }
-    return distances;
+    if(latitude != null && longitude != null){
+      return true;
+    }
   }
+  useEffect(()=>{
+     fetch("https://localhost:5001/api/matches/", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer "+sessionStorage.getItem("token")
+      }
+    })
+      .then(response =>  {if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }})
+      .then(data => setData(data));
+      
+  }, []);
+  console.log(data);
+  if(data != null && latitude != null && longitude != null){
+    findDistance(data, latitude, longitude);
+  }
+
+  
+  
+  
   const sendToMatch=()=>{
     window.location.href = "http://localhost:3000/matches";
   }
@@ -125,10 +134,14 @@ export default function CardSwipe(props){
     id.swipedRight = false;
   }
   const renderCards =() => {
-    findDistance(data, latitude, longitude);
-    // if(data2.token != null){
-    //   getData2(data2);
-    // }
+    debugger;
+    if(data == null || (latitude == null && longitude == null)){
+      return(
+        <img src={images["loader.gif"]}></img>
+      )
+    }
+    console.log(images);
+    if(latitude != null && longitude != null){
     return data.map((d) => {
       return(
         <Card
@@ -140,11 +153,10 @@ export default function CardSwipe(props){
             <br></br>
             <h1 class="Name_User" align="left">{d.name} &nbsp; {d.age}</h1>
             <p class= "detail" align="left">{d.detail}</p>
-            
-            
         </Card>
       );
     });
+  }
   }
   return(
     <div>

@@ -9,10 +9,10 @@ export default function Routes(){
     return(
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact component = {Swipe}/>
+                <Route path="/" exact component = {Login}/>
                 <Route path="/matches" exact component = {Matches}/>
                 <Route path="/profile" exact component = {Profile}/>
-                <Route path="/login" exact component = {Login}/>
+                <Route path="/swipe" exact component = {Swipe}/>
             </Switch>
         </BrowserRouter>
     );
