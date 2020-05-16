@@ -9,6 +9,10 @@ export default function Matches(props){
         .then(response => response.json())
         .then(data => setData(data));
     }, [])
+
+    debugger;
+    var holder = data[0];
+    console.log(holder);
     
     return(
         <div className="Books">

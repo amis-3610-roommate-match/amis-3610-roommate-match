@@ -96,6 +96,7 @@ export default function CardSwipe(props){
   // }
 
   const uploadUser=(id)=>{
+    debugger;
     console.log("its going");
   //Simple POST request with a JSON body using fetch
     const requestOptions = {
