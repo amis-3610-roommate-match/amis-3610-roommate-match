@@ -40,7 +40,6 @@ class NewMessageNotification extends React.Component {
 }
 
 export default function CardSwipe(props){
-  debugger;
   const { latitude, longitude, timestamp, accuracy, error }= usePosition(true);
   const [data, setData] = useState([]);
 
@@ -64,7 +63,7 @@ export default function CardSwipe(props){
     }
   }
   useEffect(()=>{
-     fetch("https://localhost:5001/api/matches/", {
+     fetch("https://localhost:5001/api/matches/"+sessionStorage.getItem("userId"), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +111,7 @@ export default function CardSwipe(props){
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
-    fetch('https://localhost:5001/api/matched', requestOptions)
+    fetch('https://localhost:5001/api/matched/'+sessionStorage.getItem("userId"), requestOptions)
         .then(response => {if (response.ok) {
           toast.success(<NewMessageNotification link="matches"/>);
           console.log(response);
@@ -135,7 +134,7 @@ export default function CardSwipe(props){
     id.swipedRight = false;
   }
   const renderCards =() => {
-    debugger;
+    
     if(data == null || (latitude == null && longitude == null)){
       return(
         <img src={images["loader.gif"]}></img>

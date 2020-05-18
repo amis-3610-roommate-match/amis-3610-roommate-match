@@ -34,6 +34,13 @@ export default class Login extends Component{
             const json = await response.json();
             this.setState({token: json.token});
             sessionStorage.setItem("token", this.state.token);
+            sessionStorage.setItem("userId", json.id);
+            sessionStorage.setItem("First Name", ((json.name).split(' '))[0]);
+            sessionStorage.setItem("Last Name", ((json.name).split(' '))[1]);
+            sessionStorage.setItem("Age", json.age);
+            sessionStorage.setItem("detail", json.detail);
+            sessionStorage.setItem("howFar", json.howFar);
+
             var decoded = jwt_decode(sessionStorage.getItem("token"));
             console.log(new Date(decoded.exp*1000));
             if((this.state.token).length > 0){
