@@ -40,6 +40,7 @@ class NewMessageNotification extends React.Component {
 }
 
 export default function CardSwipe(props){
+  debugger;
   const { latitude, longitude, timestamp, accuracy, error }= usePosition(true);
   const [data, setData] = useState([]);
 
@@ -102,6 +103,7 @@ export default function CardSwipe(props){
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
+            id: id.id,
             name: id.name,
             age: id.age,
             img: id.img,
