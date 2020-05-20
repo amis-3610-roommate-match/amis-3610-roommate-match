@@ -108,8 +108,6 @@ export default function CardSwipe(props){
             age: id.age,
             img: id.img,
             detail: id.detail,
-            swipedRight: id.swipedRight,
-            match: id.match,
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
@@ -124,16 +122,90 @@ export default function CardSwipe(props){
         }})
   }
 
+  const uploadYourself=(id, matchee)=>{
+    debugger;
+    console.log("its going");
+  //Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            id: id.id,
+            name: id.name,
+            age: id.age,
+            img: id.img,
+            detail: id.detail,
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10})
+    };
+    fetch('https://localhost:5001/api/matched/'+matchee, requestOptions)
+        .then(response => {if (response.ok) {
+          return response.json();
+        } else {
+          toast.error("Something went wrong...");
+          throw new Error('Something went wrong ...');
+        }})
+  }
+
+  const uploadLike=(id)=>{
+    debugger;
+    console.log("its going");
+  //Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            id: id.id,
+            name: id.name,
+            age: id.age,
+            img: id.img,
+            detail: id.detail,
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10})
+    };
+    fetch('https://localhost:5001/api/matches/likes/'+sessionStorage.getItem("userId"), requestOptions)
+        .then(response => {if (response.ok) {
+          // toast.success(<NewMessageNotification link="matches"/>);
+          // console.log(response);
+          return response.json();
+        } else {
+          toast.error("Something went wrong...");
+          throw new Error('Something went wrong ...');
+        }})
+  }
+
   const onSwipeRight = (id) => {
+    debugger;
     console.log(id);
-    id.swipedRight = true;
-    if(id.swipedRight === true && id.match === true){
-      uploadUser(id);
+    if((id.likes).length == 0){
+      uploadLike(id);
     }
+    else{
+      for(var i = 0; i < (id.likes).length; i++){
+        if(((id.likes)[0]).id == sessionStorage.getItem("userId")){
+          uploadLike(id);
+          uploadUser(id);
+          var yourself = {
+            id: sessionStorage.getItem("userId"),
+            name: sessionStorage.getItem("First Name")+" "+sessionStorage.getItem("Last Name"),
+            age: sessionStorage.getItem("Age"),
+            img: sessionStorage.getItem("img"),
+            detail: sessionStorage.getItem("detail"),
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10
+          };
+          uploadYourself(yourself, id.id);
+        }
+      }
+    }     
+    // id.swipedRight = true;
+    // if(id.swipedRight === true && id.match === true){
+    // uploadUser(id);
+    // }
   }
   const onSwipeLeft =id => {
     console.log(id.id);
-    id.swipedRight = false;
+    // id.swipedRight = false;
   }
   const renderCards =() => {
     

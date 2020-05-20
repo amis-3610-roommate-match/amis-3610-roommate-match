@@ -40,6 +40,8 @@ export default class Login extends Component{
             sessionStorage.setItem("Age", json.age);
             sessionStorage.setItem("detail", json.detail);
             sessionStorage.setItem("howFar", json.howFar);
+            sessionStorage.setItem("likes", json.likes);
+            sessionStorage.setItem("img", json.img);
 
             var decoded = jwt_decode(sessionStorage.getItem("token"));
             console.log(new Date(decoded.exp*1000));
