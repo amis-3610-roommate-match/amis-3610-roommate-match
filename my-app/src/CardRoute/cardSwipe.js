@@ -97,7 +97,6 @@ export default function CardSwipe(props){
 
   const uploadUser=async (id)=>{
     debugger;
-    var retrep;
     console.log("its going");
   //Simple POST request with a JSON body using fetch
     const requestOptions = {
@@ -114,16 +113,14 @@ export default function CardSwipe(props){
     };
     await fetch('https://localhost:5001/api/matched/'+sessionStorage.getItem("userId")+"/"+id.id, requestOptions)
         .then(response => {if (response.ok) {
-          debugger;
+          console.log(response)
           toast.success(<NewMessageNotification link="matches"/>);
-          retrep = response.ok;
           return response.json();
         } else {
           toast.error("Something went wrong...");
           throw new Error('Something went wrong ...');
         }})
     
-    return retrep;
   }
 
   const uploadYourself=(id, matchee)=>{
