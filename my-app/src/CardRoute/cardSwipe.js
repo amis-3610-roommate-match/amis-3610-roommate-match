@@ -95,8 +95,9 @@ export default function CardSwipe(props){
   //   onClick: //this.sendToMatch.bind()
   // }
 
-  const uploadUser=(id)=>{
+  const uploadUser=async (id)=>{
     debugger;
+    var retrep;
     console.log("its going");
   //Simple POST request with a JSON body using fetch
     const requestOptions = {
@@ -111,15 +112,18 @@ export default function CardSwipe(props){
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
-    fetch('https://localhost:5001/api/matched/'+sessionStorage.getItem("userId"), requestOptions)
+    await fetch('https://localhost:5001/api/matched/'+sessionStorage.getItem("userId")+"/"+id.id, requestOptions)
         .then(response => {if (response.ok) {
+          debugger;
           toast.success(<NewMessageNotification link="matches"/>);
-          console.log(response);
+          retrep = response.ok;
           return response.json();
         } else {
           toast.error("Something went wrong...");
           throw new Error('Something went wrong ...');
         }})
+    
+    return retrep;
   }
 
   const uploadYourself=(id, matchee)=>{
@@ -174,30 +178,67 @@ export default function CardSwipe(props){
         }})
   }
 
+  const uploadSwipe=(id)=>{
+    debugger;
+    console.log("its going");
+  //Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            id: id.id,
+            name: id.name,
+            age: id.age,
+            img: id.img,
+            detail: id.detail,
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10})
+    };
+    fetch('https://localhost:5001/api/matches/swipe/'+sessionStorage.getItem("userId"), requestOptions)
+        .then(response => {if (response.ok) {
+          // toast.success(<NewMessageNotification link="matches"/>);
+          // console.log(response);
+          return response.json();
+        } else {
+          toast.error("Something went wrong...");
+          throw new Error('Something went wrong ...');
+        }})
+  }
+
   const onSwipeRight = (id) => {
     debugger;
-    console.log(id);
-    if((id.likes).length == 0){
-      uploadLike(id);
-    }
-    else{
-      for(var i = 0; i < (id.likes).length; i++){
-        if(((id.likes)[0]).id == sessionStorage.getItem("userId")){
-          uploadLike(id);
-          uploadUser(id);
-          var yourself = {
-            id: sessionStorage.getItem("userId"),
-            name: sessionStorage.getItem("First Name")+" "+sessionStorage.getItem("Last Name"),
-            age: sessionStorage.getItem("Age"),
-            img: sessionStorage.getItem("img"),
-            detail: sessionStorage.getItem("detail"),
-            location: "40.152015899999995 -83.2268893",
-            howFar: 10
-          };
-          uploadYourself(yourself, id.id);
-        }
-      }
-    }     
+    uploadLike(id);
+    uploadSwipe(id);
+    uploadUser(id);
+    
+    // console.log(id);
+    // if((id.likes).length == 0){
+    //   uploadLike(id);
+    //   uploadSwipe(id);
+    // }
+    // else{
+    //   for(var i = 0; i < (id.likes).length; i++){
+    //     if(((id.likes)[i]).id == sessionStorage.getItem("userId")){
+    //       uploadLike(id);
+    //       uploadSwipe(id);
+    //       uploadUser(id);
+    //       var yourself = {
+    //         id: sessionStorage.getItem("userId"),
+    //         name: sessionStorage.getItem("First Name")+" "+sessionStorage.getItem("Last Name"),
+    //         age: sessionStorage.getItem("Age"),
+    //         img: sessionStorage.getItem("img"),
+    //         detail: sessionStorage.getItem("detail"),
+    //         location: "40.152015899999995 -83.2268893",
+    //         howFar: 10
+    //       };
+    //       uploadYourself(yourself, id.id);
+    //     }
+    //     else{
+    //       uploadLike(id);
+    //       uploadSwipe(id);
+    //     }
+    //   }
+    // }     
     // id.swipedRight = true;
     // if(id.swipedRight === true && id.match === true){
     // uploadUser(id);
@@ -205,6 +246,7 @@ export default function CardSwipe(props){
   }
   const onSwipeLeft =id => {
     console.log(id.id);
+    uploadSwipe(id);
     // id.swipedRight = false;
   }
   const renderCards =() => {
