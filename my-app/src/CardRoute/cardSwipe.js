@@ -116,10 +116,7 @@ export default function CardSwipe(props){
           console.log(response)
           toast.success(<NewMessageNotification link="matches"/>);
           return response.json();
-        } else {
-          toast.error("Something went wrong...");
-          throw new Error('Something went wrong ...');
-        }})
+        } })
     
   }
 
