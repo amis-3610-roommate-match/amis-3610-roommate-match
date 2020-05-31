@@ -14,7 +14,7 @@ export default function Routes(){
                 <Route path="/matches" exact component = {Matches}/>
                 <Route path="/profile" exact component = {Profile}/>
                 <Route path="/swipe" exact component = {Swipe}/>
-                <Route path="/messages" exact component = {Messages}/>
+                <Route path="/messages/:id" exact component = {Messages}/>
             </Switch>
         </BrowserRouter>
     );

@@ -8,16 +8,18 @@ function importAll(r) {
   }
   
   const images = importAll(require.context('../img', false, /\.(png|jpe?g|svg)$/));
+  
 
 
 export function MatchCard(props) {
+    const urll = "messages/"+props.user.id;
     return(
         <Card style={{ width: "16em"}}>
             <Card.Img variant="top" src={images[props.user.img]}/>
             <Card.Body>
                 <Card.Title>{props.user.name} &nbsp; {props.user.Age}</Card.Title>
                 <Card.Text>info: {props.user.detail}</Card.Text>
-                <Button variant="info">Let's Find a Place!</Button>
+                <Button variant="info" href= {urll} >Let's Find a Place!</Button>
             </Card.Body>
         </Card>
     );

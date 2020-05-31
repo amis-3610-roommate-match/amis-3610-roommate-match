@@ -212,12 +212,13 @@ ul{
   margin-bottom: 2%;
   color: white;
   border-radius: 10px;
-  width:100px;
+  margin-right: 100%;
+  min-width: 100px;
 }
 .youUser{
   background: lightgrey;
   margin-bottom: 2%;
   border-radius: 10px;
-  width:100px;
   margin-left: 85%;
+  min-width: 100px;
 }
