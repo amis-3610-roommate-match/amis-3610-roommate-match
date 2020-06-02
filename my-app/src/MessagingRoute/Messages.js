@@ -33,7 +33,7 @@ export default class Messages extends Component{
 
     componentDidMount =() =>{
         this.setState({userid: (this.props.location.pathname).substring(10)});
-        const nick = window.prompt('Your name:', 'John');
+        const nick = sessionStorage.getItem("userId")
         const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("https://localhost:5001/chatHub", {
             skipNegotiation: true,
@@ -52,16 +52,25 @@ export default class Messages extends Component{
             //     const messageList = this.state.messageList.concat([text]);
             //     this.setState({ messageList });
             // });
+           
+            this.RecievedMessageList(sessionStorage.getItem("userId"));
+            console.log(this.state.messageList);
             this.ReceivedMessage();
+            document.getElementById('MessageList').scrollTop = 9999999;
         });
     }
 
     sendMessage = () =>{
+        var deliverMessage = {
+            message:this.state.message,
+            userId:sessionStorage.getItem("userId"),
+        }
         this.state.hubConnection
-            .invoke('Send', this.state.nick, this.state.message, sessionStorage.getItem("userId"), this.state.userid)
+            .invoke('Send', this.state.nick, deliverMessage, sessionStorage.getItem("userId"), this.state.userid)
             .catch(err => console.error(err));
-        
-        this.state.messageList.push(this.state.message);
+        console.log(this.state.message);
+        this.state.messageList.push({  message: this.state.message, userId:sessionStorage.getItem("userId")});
+        console.log(this.state.messageList);
         this.setState({message: ''});
         
       
@@ -79,6 +88,31 @@ export default class Messages extends Component{
         });
     }
 
+    RecievedMessageList = (userId1) =>{
+        var userId2 = (this.props.location.pathname).substring(10);
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        };
+
+        fetch('https://localhost:5001/api/messages/'+userId1+'/'+userId2, requestOptions)
+            .then(response =>  {if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Something went wrong ...');
+            }})
+            .then(data => {if(data[0]== null){
+                    this.setState({ messageList: [] })
+                }
+                else{
+                    this.setState({ messageList: data[0].message_array });
+                }
+            });
+        }
+            // this.setState({ messageList: [] });
+        
+    
+
     render(){
         return(
             <div className="container" id="message_box">
@@ -87,12 +121,13 @@ export default class Messages extends Component{
                 </div>
                 <div id= "MessageList">
                     <ul id="Messages">
-                        {/* {items.map((item, i) => (<li className="otherUser" key={`item_${i}`}>{ item }</li>))}
-                        <li className="youUser">hello</li>
-                        <li className="otherUser">hello</li> */}
-                        {this.state.messageList.map((message, i) => (
-                        <li className="youUser" key={i}> {message} </li>
-                        ))}
+                        {this.state.messageList.map((message, i) => {if(message.userId == sessionStorage.getItem("userId")){ 
+                        return <li className="youUser" key={i}> {message.message} </li>
+                        }
+                        else{
+                            return <li className="otherUser" key={i}> {message.message} </li>
+                        }
+                        })}
                     </ul>
                 </div>
                 <input className="textarea"  id="text_entryinput" type="text"
