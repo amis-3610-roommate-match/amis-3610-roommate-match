@@ -32,20 +32,25 @@ export default class Messages extends Component{
    
 
     componentDidMount =() =>{
+        debugger;
         this.setState({userid: (this.props.location.pathname).substring(10)});
         const nick = sessionStorage.getItem("userId")
         const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("https://localhost:5001/chatHub", {
             skipNegotiation: true,
-            transport: signalR.HttpTransportType.WebSockets
+            transport: signalR.HttpTransportType.WebSockets,
           })
         .configureLogging(signalR.LogLevel.Information)
         .build();
         this.setState({hubConnection, nick}, ()=>{
             this.state.hubConnection
                 .start()
-                .then(() => console.log('Connection Started!'))
+                .then(() => this.state.hubConnection
+                .invoke('MappingNames', this.state.nick, this.state.userid)
+                .catch(err => console.error(err)))
                 .catch(err => console.log('Error While est connection :('));
+        
+        
             
             // this.state.hubConnection.on('Send', (nick, receivedMessage) => {
             //     const text = '${nick}: ${receivedMessage}';
@@ -53,24 +58,26 @@ export default class Messages extends Component{
             //     this.setState({ messageList });
             // });
            
+            //this.onconnectionMapping();
             this.RecievedMessageList(sessionStorage.getItem("userId"));
-            console.log(this.state.messageList);
             this.ReceivedMessage();
             document.getElementById('MessageList').scrollTop = 9999999;
         });
     }
-
+    // componentDidUpdate(){
+    //     debugger;
+    //     this.onconnectionMapping();
+    // }
     sendMessage = () =>{
         var deliverMessage = {
             message:this.state.message,
             userId:sessionStorage.getItem("userId"),
         }
+        
         this.state.hubConnection
             .invoke('Send', this.state.nick, deliverMessage, sessionStorage.getItem("userId"), this.state.userid)
             .catch(err => console.error(err));
-        console.log(this.state.message);
         this.state.messageList.push({  message: this.state.message, userId:sessionStorage.getItem("userId")});
-        console.log(this.state.messageList);
         this.setState({message: ''});
         
       
@@ -108,9 +115,14 @@ export default class Messages extends Component{
                     this.setState({ messageList: data[0].message_array });
                 }
             });
-        }
+    }
             // this.setState({ messageList: [] });
-        
+    
+    onconnectionMapping = () =>{
+        this.state.hubConnection
+        .invoke('MappingNames', this.state.nick)
+        .catch(err => console.error(err));
+    }    
     
 
     render(){
