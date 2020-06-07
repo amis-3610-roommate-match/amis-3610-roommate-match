@@ -12,14 +12,13 @@ function importAll(r) {
 
 
   const images = importAll(require.context('../img', false, /\.(png|jpe?g|svg)$/));
-  const items = [...Array(100)].map((val, i) => `Item ${i}`);
 
 export default class Messages extends Component{
     constructor(props){
         super(props);
         this.state = {
-          image : images["all.jpg"],
-          name : "Terri Moy",  
+          image : "",
+          name : "",  
           nick: '', 
           message: '',
           messageList:[],
@@ -60,6 +59,7 @@ export default class Messages extends Component{
            
             //this.onconnectionMapping();
             this.RecievedMessageList(sessionStorage.getItem("userId"));
+            this.getUserImage();
             this.ReceivedMessage();
             document.getElementById('MessageList').scrollTop = 9999999;
         });
@@ -124,12 +124,38 @@ export default class Messages extends Component{
         .catch(err => console.error(err));
     }    
     
+    getUserImage = () =>{
+        debugger;
+        var userId2 = (this.props.location.pathname).substring(10);
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        };
+
+        fetch('https://localhost:5001/api/matched/user/'+userId2, requestOptions)
+            .then(response =>  {if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Something went wrong ...');
+            }})
+            .then(data => {if(data!= null){
+                debugger;
+                    this.setState({ image: images[data.img] });
+                    this.setState({ name: data.name })
+                    console.log(this.state.image);
+                }
+                else{
+                    this.setState({ image: "" });
+                }
+            });
+    }
 
     render(){
         return(
             <div className="container" id="message_box">
                 <div id= "Message_Info">
-                    <span> Terri Moy</span>
+                    <img className="userPic" src={this.state.image}></img>
+                    <span> {this.state.name}</span>
                 </div>
                 <div id= "MessageList">
                     <ul id="Messages">
