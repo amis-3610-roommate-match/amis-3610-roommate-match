@@ -16,7 +16,7 @@ export default class Profile extends Component{
         super(props)
         this.state = {
           file: images["all.jpg"],
-          bio:"",
+          bio:sessionStorage.getItem("detail"),
           response:[]
         }
         this.handleChange = this.handleChange.bind(this);
@@ -28,13 +28,6 @@ export default class Profile extends Component{
         })
         console.log("hello");
       }
-      handleSubmit = (evt) => {
-        if (!this.canBeSubmitted()) {
-          evt.preventDefault();
-          return;
-        }
-        // actual submit logic...
-      };
       handleBio= evt=>{
         this.setState({bio: evt.target.value});
       }
@@ -51,7 +44,7 @@ export default class Profile extends Component{
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 name: document.getElementById("FirstName").value+" "+document.getElementById("LastName").value,
-                age: "22",
+                age: document.getElementById("Age").value,
                 img: "all.jpg",
                 detail: document.getElementById("exampleFormControlTextarea1").value,
                 swipedRight: false,
@@ -59,7 +52,7 @@ export default class Profile extends Component{
                 location: "40.152015899999995 -83.2268893",
                 howFar: Number(document.getElementById("distanceSelect").value)})
         };
-        fetch('https://localhost:5001/api/matches', requestOptions)
+        fetch('https://localhost:5001/api/matches/'+sessionStorage.getItem("userId"), requestOptions)
             .then(response =>  {if (response.ok) {
                 toast.success("Saved profile!");
                 return response.json();
@@ -85,13 +78,13 @@ export default class Profile extends Component{
                     <br></br>
                     <br></br>
                     <label className="Labelname" >First Name</label>
-                    <input className="form-control barInput"  id="FirstName" type="text" placeholder="First Name"></input>
+                    <input className="form-control barInput"  id="FirstName" type="text" value={sessionStorage.getItem("First Name")}></input>
                     <br></br>
                     <label className="Labelname" >Last Name</label>
-                    <input className="form-control barInput" type="text" id="LastName" placeholder="Last Name"></input>
+                    <input className="form-control barInput" type="text" id="LastName" value={sessionStorage.getItem("Last Name")}></input>
                     <br></br>
                     <label className="Labelname" >Age</label>
-                    <input className="form-control barInput" type="text" id="Age" placeholder="Age"></input>
+                    <input className="form-control barInput" type="text" id="Age" value={sessionStorage.getItem("Age")}></input>
                     <br></br>
                     <div className="form-group">
                         <label className="Labelname"  >Select Gender:</label>
@@ -103,7 +96,7 @@ export default class Profile extends Component{
                     </div>
                     <br></br>
                     <label className="Labelname" >Bio</label>
-                    <textarea className="form-control barInput" id="exampleFormControlTextarea1" rows="4" value={this.state.bio}  onChange={this.handleBio} placeholder="Bio, details about yourself"></textarea>
+                    <textarea className="form-control barInput" id="exampleFormControlTextarea1" rows="4" value={this.state.bio}  onChange={this.handleBio} placeholder=""></textarea>
                     <br></br>
                     <div className="form-group">
                         <label className="Labelname"  >Select Distance:</label>

@@ -78,7 +78,7 @@ h1{
 }
 .box{
   width: 150px;
-  height: 100px;            
+  height: 150px;            
   position: absolute;
   
   
@@ -115,6 +115,20 @@ h1{
   
   
 }
+
+.loginBox{
+  width: 500px;
+  height: 460px;
+  margin-left:33%;
+  margin-top: 5%;
+  border-radius: 10px;
+  border: 2px solid #888888;
+  background: white;
+  box-shadow: 3px 3px 3px 3px #888888;
+  
+  
+}
+
 .Labelname{
   display: block;
   text-align: left;
@@ -125,6 +139,20 @@ h1{
   width: 580px;
   margin-left:10px;
 }
+#userName {
+  width: 480px;
+  margin-left:10px;
+}
+#userLabel{
+  margin-top: 8%;
+}
+#login_button{
+  margin-top: 10%;
+}
+#passWord {
+  width: 480px;
+  margin-left:10px;
+}
 .custom-file{
   width: 400px;
 }
@@ -133,4 +161,67 @@ h1{
 }
 #Sex{
   width:80px;
+}
+#logo_box{
+  margin-top: 7%;
+}
+#MessageList{
+  background:  white;
+  width: 990px;
+  height: 460px;
+  overflow-y: scroll;
+  margin-left: 5.5%; 
+  border-radius: 0px;
+  border: lightgrey;
+  border-width: 2px;
+  border-style: solid;
+  
+}
+#Message_Info{
+  background:  white;
+  width: 990px;
+  height: 30px;
+  overflow-y: scroll;
+  margin-left: 5.5%; 
+  border: black;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+}
+span{
+  font-weight: bold;
+  margin-left: 3%;
+}
+#text_entryinput{
+  margin-top: .1%;
+  margin-left: 5.4%;
+  width: 890px;
+}
+#sendbbtn{
+  width: 100px;
+  height: 28px;
+  font-size: 12px;
+  margin-left: 85.5%;
+  margin-top:-2.6%;
+}
+ul{
+  list-style-type: none;
+}
+.otherUser{
+  background: blue;
+  margin-bottom: 2%;
+  color: white;
+  border-radius: 10px;
+  margin-right: 100%;
+  min-width: 100px;
+}
+.youUser{
+  background: lightgrey;
+  margin-bottom: 2%;
+  border-radius: 10px;
+  margin-left: 85%;
+  min-width: 100px;
+}
+.userPic{
+  width: 30px;
 }

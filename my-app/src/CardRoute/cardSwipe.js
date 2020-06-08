@@ -18,7 +18,7 @@ const linkStyle = {
  padding: "5px"
 }; 
 
-const images = importAll(require.context('../img', false, /\.(png|jpe?g|svg)$/));
+const images = importAll(require.context('../img', false, /\.(png|jpe?g|svg|gif)$/));
 
 class NewMessageNotification extends React.Component {
   
@@ -40,19 +40,12 @@ class NewMessageNotification extends React.Component {
 }
 
 export default function CardSwipe(props){
+  debugger;
   const { latitude, longitude, timestamp, accuracy, error }= usePosition(true);
   const [data, setData] = useState([]);
-  console.log(latitude+" "+longitude);
-    
-  useEffect(() =>{
-      fetch("https://localhost:5001/api/matches/")
-      .then(response => response.json())
-      .then(data => setData(data));
-  }, [])
 
   const findDistance=(data, latitude, longitude)=>{
-    var distances = []
-    debugger;
+    var distances = [];
     for(var i = 0; i < data.length; i++){
       var matchLat = Number((data[i].location).substring(0,(data[i].location).indexOf(" "))); 
       var matchLong = Number((data[i].location).substring((data[i].location).indexOf(" "), (data[i].location).length)); 
@@ -61,16 +54,39 @@ export default function CardSwipe(props){
       distances.push(calcDist);
     }
     for(var i = 0; i < data.length; i++){
-      if(distances[i] > 10){
+      if(distances[i] > 5){
         data.splice(i, 1);
 
       }
     }
-    return distances;
+    if(latitude != null && longitude != null){
+      return true;
+    }
+  }
+  useEffect(()=>{
+     fetch("https://localhost:5001/api/matches/"+sessionStorage.getItem("userId"), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer "+sessionStorage.getItem("token")
+      }
+    })
+      .then(response =>  {if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }})
+      .then(data => setData(data));
+      
+  }, []);
+  console.log(data);
+  if(data != null && latitude != null && longitude != null){
+    findDistance(data, latitude, longitude);
   }
 
-  console.log();
-
+  
+  
+  
   const sendToMatch=()=>{
     window.location.href = "http://localhost:3000/matches";
   }
@@ -79,25 +95,49 @@ export default function CardSwipe(props){
   //   onClick: //this.sendToMatch.bind()
   // }
 
-  const uploadUser=(id)=>{
+  const uploadUser=async (id)=>{
+    debugger;
     console.log("its going");
   //Simple POST request with a JSON body using fetch
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
+            id: id.id,
             name: id.name,
             age: id.age,
             img: id.img,
             detail: id.detail,
-            swipedRight: id.swipedRight,
-            match: id.match,
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
-    fetch('https://localhost:5001/api/matched', requestOptions)
+    await fetch('https://localhost:5001/api/matched/'+sessionStorage.getItem("userId")+"/"+id.id, requestOptions)
         .then(response => {if (response.ok) {
+          console.log(response)
           toast.success(<NewMessageNotification link="matches"/>);
+          return response.json();
+        } })
+    
+  }
+
+  const uploadYourself=(id, matchee)=>{
+    debugger;
+    console.log("its going");
+  //Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            id: id.id,
+            name: id.name,
+            age: id.age,
+            img: id.img,
+            detail: id.detail,
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10})
+    };
+    fetch('https://localhost:5001/api/matched/'+matchee, requestOptions)
+        .then(response => {if (response.ok) {
           return response.json();
         } else {
           toast.error("Something went wrong...");
@@ -105,20 +145,113 @@ export default function CardSwipe(props){
         }})
   }
 
+  const uploadLike=(id)=>{
+    debugger;
+    console.log("its going");
+  //Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            id: id.id,
+            name: id.name,
+            age: id.age,
+            img: id.img,
+            detail: id.detail,
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10})
+    };
+    fetch('https://localhost:5001/api/matches/likes/'+sessionStorage.getItem("userId"), requestOptions)
+        .then(response => {if (response.ok) {
+          // toast.success(<NewMessageNotification link="matches"/>);
+          // console.log(response);
+          return response.json();
+        } else {
+          toast.error("Something went wrong...");
+          throw new Error('Something went wrong ...');
+        }})
+  }
+
+  const uploadSwipe=(id)=>{
+    debugger;
+    console.log("its going");
+  //Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            id: id.id,
+            name: id.name,
+            age: id.age,
+            img: id.img,
+            detail: id.detail,
+            location: "40.152015899999995 -83.2268893",
+            howFar: 10})
+    };
+    fetch('https://localhost:5001/api/matches/swipe/'+sessionStorage.getItem("userId"), requestOptions)
+        .then(response => {if (response.ok) {
+          // toast.success(<NewMessageNotification link="matches"/>);
+          // console.log(response);
+          return response.json();
+        } else {
+          toast.error("Something went wrong...");
+          throw new Error('Something went wrong ...');
+        }})
+  }
 
   const onSwipeRight = (id) => {
-    console.log(id);
-    id.swipedRight = true;
-    if(id.swipedRight === true && id.match === true){
-      uploadUser(id);
-    }
+    debugger;
+    uploadLike(id);
+    uploadSwipe(id);
+    uploadUser(id);
+    
+    // console.log(id);
+    // if((id.likes).length == 0){
+    //   uploadLike(id);
+    //   uploadSwipe(id);
+    // }
+    // else{
+    //   for(var i = 0; i < (id.likes).length; i++){
+    //     if(((id.likes)[i]).id == sessionStorage.getItem("userId")){
+    //       uploadLike(id);
+    //       uploadSwipe(id);
+    //       uploadUser(id);
+    //       var yourself = {
+    //         id: sessionStorage.getItem("userId"),
+    //         name: sessionStorage.getItem("First Name")+" "+sessionStorage.getItem("Last Name"),
+    //         age: sessionStorage.getItem("Age"),
+    //         img: sessionStorage.getItem("img"),
+    //         detail: sessionStorage.getItem("detail"),
+    //         location: "40.152015899999995 -83.2268893",
+    //         howFar: 10
+    //       };
+    //       uploadYourself(yourself, id.id);
+    //     }
+    //     else{
+    //       uploadLike(id);
+    //       uploadSwipe(id);
+    //     }
+    //   }
+    // }     
+    // id.swipedRight = true;
+    // if(id.swipedRight === true && id.match === true){
+    // uploadUser(id);
+    // }
   }
   const onSwipeLeft =id => {
     console.log(id.id);
-    id.swipedRight = false;
+    uploadSwipe(id);
+    // id.swipedRight = false;
   }
   const renderCards =() => {
-    findDistance(data, latitude, longitude)
+    
+    if(data == null || (latitude == null && longitude == null)){
+      return(
+        <img src={images["loader.gif"]}></img>
+      )
+    }
+    console.log(images);
+    if(latitude != null && longitude != null){
     return data.map((d) => {
       return(
         <Card
@@ -130,11 +263,10 @@ export default function CardSwipe(props){
             <br></br>
             <h1 class="Name_User" align="left">{d.name} &nbsp; {d.age}</h1>
             <p class= "detail" align="left">{d.detail}</p>
-            
-            
         </Card>
       );
     });
+  }
   }
   return(
     <div>
