@@ -52,7 +52,7 @@ export default class Profile extends Component{
                 location: "40.152015899999995 -83.2268893",
                 howFar: Number(document.getElementById("distanceSelect").value)})
         };
-        fetch('https://localhost:5001/api/matches/'+sessionStorage.getItem("userId"), requestOptions)
+        fetch('https://roommate-backend.azurewebsites.net/api/matches/'+sessionStorage.getItem("userId"), requestOptions)
             .then(response =>  {if (response.ok) {
                 toast.success("Saved profile!");
                 return response.json();
