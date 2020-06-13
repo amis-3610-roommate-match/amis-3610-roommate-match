@@ -46,7 +46,7 @@ export default class Login extends Component{
             var decoded = jwt_decode(sessionStorage.getItem("token"));
             console.log(new Date(decoded.exp*1000));
             if((this.state.token).length > 0){
-                window.location.replace( "https://roommate-backend.azurewebsites.net/swipe");
+                window.location.replace( "https://roommatematcher.azurewebsites.net/swipe");
             }
     }
     
@@ -75,7 +75,7 @@ export default class Login extends Component{
             );
         }
         else{
-            window.location.replace( "https://roommate-backend.azurewebsites.net/swipe");
+            window.location.replace( "https://roommatematcher.azurewebsites.net/swipe");
         }
         
     }

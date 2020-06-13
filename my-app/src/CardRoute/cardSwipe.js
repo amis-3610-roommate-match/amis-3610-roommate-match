@@ -88,7 +88,7 @@ export default function CardSwipe(props){
   
   
   const sendToMatch=()=>{
-    window.location.href = "https://roommate-backend.azurewebsites.net/matches";
+    window.location.href = "https://roommatematcher.azurewebsites.net/matches";
   }
 
   // const options ={
