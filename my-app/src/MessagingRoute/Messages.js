@@ -35,7 +35,7 @@ export default class Messages extends Component{
         this.setState({userid: (this.props.location.pathname).substring(10)});
         const nick = sessionStorage.getItem("userId")
         const hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl("https://roommate-backend.azurewebsites.net/chatHub", {
+        .withUrl("https://roommate-backend.azurewebsites.net/chat", {
             skipNegotiation: true,
             transport: signalR.HttpTransportType.WebSockets,
           })
