@@ -30,7 +30,7 @@ export default class Login extends Component{
               username: this.state.userName,
               password: this.state.password})
             };
-            const response = await fetch('https://localhost:5001/users/authenticate', ReqOP)
+            const response = await fetch('https://roommate-backend.azurewebsites.net/users/authenticate', ReqOP)
             const json = await response.json();
             this.setState({token: json.token});
             sessionStorage.setItem("token", this.state.token);

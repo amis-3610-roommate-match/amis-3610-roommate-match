@@ -23,6 +23,11 @@ export default class Profile extends Component{
         this.uploadUser = this.uploadUser.bind(this);
       }
       handleChange(event) {
+        debugger;
+        var imageReader = new FileReader();
+        imageReader.readAsDataURL(event.target.files[0]);
+        console.log(imageReader.result);
+        console.log(this.state.file);
         this.setState({
           file: URL.createObjectURL(event.target.files[0])
         })
@@ -36,7 +41,10 @@ export default class Profile extends Component{
           return bio.length > 0; 
       }
       uploadUser= () =>{
+          debugger;
           console.log("its going");
+          
+          
           
         //Simple POST request with a JSON body using fetch
         const requestOptions = {
@@ -52,7 +60,7 @@ export default class Profile extends Component{
                 location: "40.152015899999995 -83.2268893",
                 howFar: Number(document.getElementById("distanceSelect").value)})
         };
-        fetch('https://localhost:5001/api/matches/'+sessionStorage.getItem("userId"), requestOptions)
+        fetch('https://roommate-backend.azurewebsites.net/api/matches/'+sessionStorage.getItem("userId"), requestOptions)
             .then(response =>  {if (response.ok) {
                 toast.success("Saved profile!");
                 return response.json();

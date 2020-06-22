@@ -64,7 +64,7 @@ export default function CardSwipe(props){
     }
   }
   useEffect(()=>{
-     fetch("https://localhost:5001/api/matches/"+sessionStorage.getItem("userId"), {
+     fetch("https://roommate-backend.azurewebsites.net/api/matches/"+sessionStorage.getItem("userId"), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ export default function CardSwipe(props){
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
-    await fetch('https://localhost:5001/api/matched/'+sessionStorage.getItem("userId")+"/"+id.id, requestOptions)
+    await fetch('https://roommate-backend.azurewebsites.net/api/matched/'+sessionStorage.getItem("userId")+"/"+id.id, requestOptions)
         .then(response => {if (response.ok) {
           console.log(response)
           toast.success(<NewMessageNotification link="matches"/>);
@@ -136,7 +136,7 @@ export default function CardSwipe(props){
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
-    fetch('https://localhost:5001/api/matched/'+matchee, requestOptions)
+    fetch('https://roommate-backend.azurewebsites.net/api/matched/'+matchee, requestOptions)
         .then(response => {if (response.ok) {
           return response.json();
         } else {
@@ -161,7 +161,7 @@ export default function CardSwipe(props){
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
-    fetch('https://localhost:5001/api/matches/likes/'+sessionStorage.getItem("userId"), requestOptions)
+    fetch('https://roommate-backend.azurewebsites.net/api/matches/likes/'+sessionStorage.getItem("userId"), requestOptions)
         .then(response => {if (response.ok) {
           // toast.success(<NewMessageNotification link="matches"/>);
           // console.log(response);
@@ -188,7 +188,7 @@ export default function CardSwipe(props){
             location: "40.152015899999995 -83.2268893",
             howFar: 10})
     };
-    fetch('https://localhost:5001/api/matches/swipe/'+sessionStorage.getItem("userId"), requestOptions)
+    fetch('https://roommate-backend.azurewebsites.net/api/matches/swipe/'+sessionStorage.getItem("userId"), requestOptions)
         .then(response => {if (response.ok) {
           // toast.success(<NewMessageNotification link="matches"/>);
           // console.log(response);
