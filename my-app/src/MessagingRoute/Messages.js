@@ -35,7 +35,7 @@ export default class Messages extends Component{
         this.setState({userid: (this.props.location.pathname).substring(10)});
         const nick = sessionStorage.getItem("userId")
         const hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl("https://roommate-backend.azurewebsites.net/chatHub", {
+        .withUrl("https://localhost:5001/chatHub", {
             skipNegotiation: true,
             transport: signalR.HttpTransportType.WebSockets,
           })
@@ -102,7 +102,7 @@ export default class Messages extends Component{
             headers: { 'Content-Type': 'application/json' },
         };
 
-        fetch('https://roommate-backend.azurewebsites.net/api/messages/'+userId1+'/'+userId2, requestOptions)
+        fetch('https://localhost:5001/api/messages/'+userId1+'/'+userId2, requestOptions)
             .then(response =>  {if (response.ok) {
                 return response.json();
             } else {
@@ -132,7 +132,7 @@ export default class Messages extends Component{
             headers: { 'Content-Type': 'application/json' },
         };
 
-        fetch('https://roommate-backend.azurewebsites.net/api/matched/user/'+userId2, requestOptions)
+        fetch('https://localhost:5001/api/matched/user/'+userId2, requestOptions)
             .then(response =>  {if (response.ok) {
                 return response.json();
             } else {
