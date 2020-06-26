@@ -5,7 +5,7 @@ export default function Matches(props){
     const [data, setData] = useState([]);
     
     useEffect(() =>{
-        fetch("https://roommate-backend.azurewebsites.net/api/matched/"+sessionStorage.getItem("userId"))
+        fetch("https://localhost:5001/api/matched/"+sessionStorage.getItem("userId"))
         .then(response => response.json())
         .then(data => setData(data));
     }, [])

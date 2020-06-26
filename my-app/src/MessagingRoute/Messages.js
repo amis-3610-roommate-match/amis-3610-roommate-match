@@ -35,16 +35,17 @@ export default class Messages extends Component{
         this.setState({userid: (this.props.location.pathname).substring(10)});
         const nick = sessionStorage.getItem("userId")
         const hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl("https://roommate-backend.azurewebsites.net/chat", {
-            skipNegotiation: true,
-            transport: signalR.HttpTransportType.WebSockets,
-          })
+        .withUrl("https://localhost:5001/chat", {
+            "Access-Control-Allow-Origin":    "http://localhost:3000",
+            'Access-Control-Allow-Credentials': false,
+            "withCredentials": false
+        })
         .configureLogging(signalR.LogLevel.Information)
         .build();
         this.setState({hubConnection, nick}, ()=>{
             this.state.hubConnection
-                .start()
-                .then(() => this.state.hubConnection
+            .start()
+            .then(() => this.state.hubConnection
                 .invoke('MappingNames', this.state.nick, this.state.userid)
                 .catch(err => console.error(err)))
                 .catch(err => console.log('Error While est connection :('));
@@ -60,7 +61,7 @@ export default class Messages extends Component{
             //this.onconnectionMapping();
             this.RecievedMessageList(sessionStorage.getItem("userId"));
             this.getUserImage();
-            this.ReceivedMessage();
+            this.ReceivedMessage(this.state.hubConnection);
             document.getElementById('MessageList').scrollTop = 9999999;
         });
     }
@@ -83,8 +84,9 @@ export default class Messages extends Component{
       
     }
 
-    ReceivedMessage = () =>{
-        this.state.hubConnection.on("ReceiveMessage", (user, message) => {
+    ReceivedMessage = (connection) =>{
+        connection.on("ReceiveMessage", (user, message) => {
+            console.log(message);
             if(user != this.state.nick){
                 const encodedMsg = `${message}`;
                 const li = document.createElement("li");
@@ -102,7 +104,7 @@ export default class Messages extends Component{
             headers: { 'Content-Type': 'application/json' },
         };
 
-        fetch('https://roommate-backend.azurewebsites.net/api/messages/'+userId1+'/'+userId2, requestOptions)
+        fetch('https://localhost:5001/api/messages/'+userId1+'/'+userId2, requestOptions)
             .then(response =>  {if (response.ok) {
                 return response.json();
             } else {
@@ -132,7 +134,7 @@ export default class Messages extends Component{
             headers: { 'Content-Type': 'application/json' },
         };
 
-        fetch('https://roommate-backend.azurewebsites.net/api/matched/user/'+userId2, requestOptions)
+        fetch('https://localhost:5001/api/matched/user/'+userId2, requestOptions)
             .then(response =>  {if (response.ok) {
                 return response.json();
             } else {

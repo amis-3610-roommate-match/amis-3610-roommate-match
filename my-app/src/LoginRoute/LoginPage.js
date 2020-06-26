@@ -30,7 +30,7 @@ export default class Login extends Component{
               username: this.state.userName,
               password: this.state.password})
             };
-            const response = await fetch('https://roommate-backend.azurewebsites.net/users/authenticate', ReqOP)
+            const response = await fetch('https://localhost:5001/users/authenticate', ReqOP)
             const json = await response.json();
             this.setState({token: json.token});
             sessionStorage.setItem("token", this.state.token);
@@ -46,7 +46,7 @@ export default class Login extends Component{
             var decoded = jwt_decode(sessionStorage.getItem("token"));
             console.log(new Date(decoded.exp*1000));
             if((this.state.token).length > 0){
-                window.location.replace( "https://roommatematcher.azurewebsites.net/swipe");
+                window.location.replace( "http://localhost:3000/swipe");
             }
     }
     
@@ -75,7 +75,7 @@ export default class Login extends Component{
             );
         }
         else{
-            window.location.replace( "https://roommatematcher.azurewebsites.net/swipe");
+            window.location.replace( "http://localhost:3000/swipe");
         }
         
     }
