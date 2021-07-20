@@ -15,7 +15,7 @@
     "react-burger-menu": "^2.6.13",
     "react-dom": "^16.13.0",
     "react-hammerjs": "^1.0.1",
-    "react-native": "^0.61.5",
+    "react-native": "^0.62.3",
     "react-native-swipeable-cards": "^1.1.23",
     "react-notifications": "^1.5.0",
     "react-redux": "^7.2.0",
